@@ -1,0 +1,27 @@
+Custom languages :
+    - Signs
+    - Chat
+    - Titles
+
+Random names:
+    - can only see teammate`s name
+
+
+Titles.sendCompleteTitle(event.getPlayer(), "&cTEST", "&aSUBTITLE" ,20, 40, 20);
+Titles.sendActionBar(event.getPlayer(), "&cActionBar &a" + event.getPlayer().getDisplayName());
+
+TabBar.sendTab(event.getPlayer(), "&eHEAD", "&cFOOTER");
+
+new JsonMessage("&cSUPER COOLE MESSAGE")
+        .addToolTip("1e &bHover", "2e &3Hover")
+        .addSuggestion("Ik suggest")
+        .then(" &6Hoe spijtig")
+        .addCommand("/say ook mooi")
+        .send(event.getPlayer());
+
+new JsonMessage("&cA COOL MESSAGE")
+        .addToolTip("1e &bHover", "2e &3Hover")
+        .addSuggestion("I suggest")
+        .then(" &6Say life is beautiful")
+        .addCommand("/say life is beautiful!")
+        .send(event.getPlayer());
