@@ -1,9 +1,9 @@
 package com.Duckelekuuk.PPF.Managers;
 
+import com.Duckelekuuk.PPF.Events.GameReadyEvent;
 import com.Duckelekuuk.PPF.GameFrame.PPCore;
 import com.Duckelekuuk.PPF.GameFrame.Utils.Utils;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
-import com.Duckelekuuk.PPF.Utils.PixelPartyConstant;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
@@ -11,24 +11,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
 
 @Getter
 public class GameManager {
 
-    private PixelPartyConstant pixelPartyConstant;
     @Getter
     private ArrayList<PPCore> games = new ArrayList<>();
     private PPCore currentGame = null;
     private PPCore nextGame = null;
-
-    public GameManager(PixelPartyConstant pixelPartyConstant) {
-        this.pixelPartyConstant = pixelPartyConstant;
-
-//        this.nextGame = pickRandomGame();
-    }
+    private boolean loading;
 
     public void registerGame(PPCore ppCore) {
         for (int i = 0; i < games.size(); i++) {
@@ -61,9 +55,16 @@ public class GameManager {
     }
 
     public void switchGame() {
+        loading = true;
+        if (nextGame == null) {
+            this.nextGame = pickRandomGame();
+        }
+
+        nextGame.setup();
+        Bukkit.getServer().getPluginManager().callEvent(new GameReadyEvent(nextGame.getGame()));
         currentGame = nextGame;
-        //TODO: Check for force next game
-        this.nextGame = pickRandomGame();
+
+        loading = false;
     }
 
     public static GameManager getInstance() {

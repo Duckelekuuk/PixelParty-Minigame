@@ -5,7 +5,7 @@ package com.Duckelekuuk.PPF.GameFrame.Extenders;
  * Copyright © 2016, Duco Lindner, All rights reserved.
  */
 
-public interface GameStartExecutor {
+public interface GameTimerTickExecutor {
 
-    void execute();
+    void gameTick();
 }

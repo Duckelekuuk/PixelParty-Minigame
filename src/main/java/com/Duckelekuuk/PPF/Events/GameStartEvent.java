@@ -1,12 +1,9 @@
 package com.Duckelekuuk.PPF.Events;
 
 import com.Duckelekuuk.PPF.GameFrame.Core.Game;
-import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import java.util.List;
 
 /**
  * @AUTHOR: Duckelekuuk
@@ -14,15 +11,13 @@ import java.util.List;
  */
 
 @Getter
-public class GameOverEvent extends Event {
+public class GameStartEvent extends Event {
 
     private Game game;
-    private List<GamePlayer> winners;
     private static HandlerList handlerList = new HandlerList();
 
-    public GameOverEvent(Game game, List<GamePlayer> winners) {
+    public GameStartEvent(Game game) {
         this.game = game;
-        this.winners = winners;
     }
 
     @Override

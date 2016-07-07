@@ -7,8 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * Created by Duco on 22-2-2016.
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class ItemStackBuilder {
 
     private ItemStack ITEM_STACK;

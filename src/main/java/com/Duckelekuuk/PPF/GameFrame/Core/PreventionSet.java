@@ -4,16 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by Duco on 23-2-2016.
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
 
 @Getter
 @Setter
 public class PreventionSet {
 
-    private boolean AllowedToBuild;
+    private boolean AllowedToPlaceBlocks;
     private boolean AllowedToChat;
-    private boolean AllowedToDestroy;
+    private boolean AllowedToDestroyBlocks;
+    private boolean AllowedToDamageBlocks;
     private boolean AllowedToPVP;
     private boolean AllowedToPVE;
     private boolean AllowedToInteract;

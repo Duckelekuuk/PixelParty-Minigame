@@ -2,16 +2,17 @@ package com.Duckelekuuk.PPF.Listeners.Player;
 
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
+import com.Duckelekuuk.PPF.Utils.PixelPartyState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class PlayerPVEListener implements Listener {
 
     private PixelPartyFrame plugin;
@@ -33,8 +34,11 @@ public class PlayerPVEListener implements Listener {
             return;
         }
 
-        if (!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToPVE()) {
+        if (plugin.getPixelPartyConstant().getPixelPartyState() != PixelPartyState.IN_GAME) {
             event.setCancelled(true);
+            return;
         }
+
+        event.setCancelled(!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToPVE());
     }
 }

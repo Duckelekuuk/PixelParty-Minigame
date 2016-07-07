@@ -1,0 +1,12 @@
+name: PixelPartyFrame
+description: PixelPartyFramework
+main: com.Duckelekuuk.PPF.PixelPartyFrame
+version: 1.5
+
+commands:
+  pixelparty:
+    description: test command
+  pp:
+    description: test command
+  pparty:
+    description: test command

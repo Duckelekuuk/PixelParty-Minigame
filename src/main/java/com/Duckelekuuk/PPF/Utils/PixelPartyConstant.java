@@ -2,36 +2,59 @@ package com.Duckelekuuk.PPF.Utils;
 
 import com.Duckelekuuk.PPF.Events.PixelPartySwitchStateEvent;
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
+import com.Duckelekuuk.PPF.PixelPartyFrame;
+import com.Duckelekuuk.PPF.ScoreBoards.LobbyScoreBoard;
+import com.Duckelekuuk.PPF.Timers.LobbyTimer;
+import com.Duckelekuuk.PPF.Timers.TransitionTimer;
+import com.Duckelekuuk.PPF.Timers.WarmUpTimer;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.HashSet;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
 
 @Getter
 @Setter
 public class PixelPartyConstant {
 
+    private PixelPartyFrame plugin;
+
     private Location lobbyLocation;
     private PixelPartyState pixelPartyState;
-    private HashSet<GamePlayer> gamePlayers;
+    private HashSet<GamePlayer> players;
 
+    private int maxGames;
     private boolean isCounting;
-    private Scoreboard scoreBoard_Transition;
-    private Scoreboard scoreBoard_PreStart;
-    private Scoreboard scoreBoard_transition;
+    private int maxPlayers;
 
-    public PixelPartyConstant() {
+    private BukkitTask lobbyTimer;
+    private TransitionTimer transitionTimer;
+    private WarmUpTimer warmUpTimer;
+
+    private LobbyScoreBoard scoreBoard_Lobby;
+    private Scoreboard scoreBoard_Spectator;
+    private Scoreboard scoreBoard_PreStart;
+
+    public PixelPartyConstant(PixelPartyFrame plugin) {
+        this.plugin = plugin;
         this.lobbyLocation = new Location(Bukkit.getServer().getWorld("world"), 0, 0, 0);
-        this.gamePlayers = new HashSet<>();
+        this.players = new HashSet<>();
+        this.maxGames = 5;
         this.isCounting = false;
+        this.maxPlayers = 24;
+
+
+        this.lobbyTimer = new LobbyTimer().runTaskTimerAsynchronously(plugin, 0, 20);
+        this.transitionTimer = new TransitionTimer();
+        this.warmUpTimer = new WarmUpTimer(players);
 
         setPixelPartyState(PixelPartyState.LOBBY);
     }
@@ -43,6 +66,6 @@ public class PixelPartyConstant {
 
 
     public boolean canStart() {
-        return getGamePlayers().size() >= 2;
+        return players.size() >= 2;
     }
 }

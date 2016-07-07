@@ -5,12 +5,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
-import java.util.UUID;
-
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class MongoAPI {
 
     private DBCollection collection;

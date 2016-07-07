@@ -5,15 +5,22 @@ import com.Duckelekuuk.PPF.Managers.GameManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class GameTimer extends BukkitRunnable {
 
-    Game game = GameManager.getInstance().getCurrentGame().getGame();
+    private Game game = GameManager.getInstance().getCurrentGame().getGame();
 
     @Override
     public void run() {
-        game.getGameTimerTick();
+        if (game.getEndExecutor().canFinish()) {
+            game.endGame();
+        }
+        if (game.getGameTimerTickExecutor() != null) {
+            game.getGameTimerTickExecutor().gameTick();
+        }
+        //TODO: UPDATE SCOREBOARD
     }
 }

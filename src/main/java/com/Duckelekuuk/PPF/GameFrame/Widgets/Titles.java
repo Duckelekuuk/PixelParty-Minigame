@@ -9,8 +9,10 @@ import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 /**
- * Created by Duco on 23-2-2016.
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class Titles {
 
     public static void sendTitle(Player player, String message, int fadeIn, int duration, int fadeOut) {

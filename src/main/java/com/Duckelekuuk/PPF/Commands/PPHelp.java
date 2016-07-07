@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
  * @AUTHOR: Duckelekuuk
  * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class PPHelp extends PPCommand {
 
     private PixelPartyFrame plugin;
@@ -20,7 +21,7 @@ public class PPHelp extends PPCommand {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         sender.sendMessage("");
-        sender.sendMessage(Utils.color("&7------------ &6&lPixel&e&lParty &7 ------------"));
+        sender.sendMessage(Utils.color("&7------------ &6&lPixel&e&lParty &7-------------"));
         sender.sendMessage("");
 
         for (PPCommand command : plugin.getCommandManager().getCommands()) {

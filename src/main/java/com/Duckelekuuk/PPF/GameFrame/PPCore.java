@@ -4,9 +4,10 @@ import com.Duckelekuuk.PPF.GameFrame.Core.Game;
 import org.bukkit.plugin.Plugin;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public interface PPCore {
 
     Game game = null;

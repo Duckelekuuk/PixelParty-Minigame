@@ -1,13 +1,9 @@
 package com.Duckelekuuk.PPF.Managers;
 
-import com.Duckelekuuk.PPF.Commands.PPCommand;
-import com.Duckelekuuk.PPF.Commands.PPForceNextGame;
-import com.Duckelekuuk.PPF.Commands.PPHelp;
-import com.Duckelekuuk.PPF.Commands.PPList;
+import com.Duckelekuuk.PPF.Commands.*;
 import com.Duckelekuuk.PPF.GameFrame.Utils.Utils;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,6 +19,7 @@ import java.util.List;
  * @AUTHOR: Duckelekuuk
  * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class CommandManager implements CommandExecutor, TabCompleter {
 
     @Getter
@@ -35,6 +32,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         this.commands = new HashSet<>();
         commands.add(new PPHelp(plugin));
         commands.add(new PPList(plugin));
+        commands.add(new PPWorld(plugin));
         commands.add(new PPForceNextGame(plugin));
     }
 
@@ -58,8 +56,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         }
 
         PPCommand ppCommand = getCommand(args[0]);
+        if (ppCommand == null) {
+            getCommand("help").onCommand(sender, args);
+            return true;
+        }
 
-        if (args.length < ppCommand.getArgs().length) {
+        if (args.length < ppCommand.getArgs().length) { //TODO :fix
             sender.sendMessage(Utils.prefixMessage("Please specify you arguments."));
             getCommand("help").onCommand(sender, args);
             return true;
@@ -99,9 +101,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                             }
                         }
                     }
-                }
-
-                else {
+                } else {
                     for (PPCommand ppCommand : getCommands()) {
                         for (String commandLabel : ppCommand.getLabels()) {
                             commands.add(commandLabel);

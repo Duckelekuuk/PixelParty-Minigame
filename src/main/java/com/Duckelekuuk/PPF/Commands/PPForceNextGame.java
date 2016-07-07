@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
  * @AUTHOR: Duckelekuuk
  * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class PPForceNextGame extends PPCommand {
 
     private PixelPartyFrame plugin;
@@ -26,7 +27,9 @@ public class PPForceNextGame extends PPCommand {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
+
         PPCore ppCore = plugin.getGameManager().getGame(args[1]);
+
         if (ppCore == null) {
             if (sender instanceof Player) {
                 sender.sendMessage(MessageBase.header);
@@ -36,6 +39,7 @@ public class PPForceNextGame extends PPCommand {
                 sender.sendMessage(MessageBase.footer);
                 return;
             }
+
             Utils.sendMessage(sender, "&cThat game does not exist!", "&aType /pixelparty list!");
             return;
         }

@@ -5,9 +5,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class MongoDB {
 
     private MongoClient mongo = null;

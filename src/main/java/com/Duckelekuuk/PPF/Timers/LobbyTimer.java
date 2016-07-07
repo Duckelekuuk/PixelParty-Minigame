@@ -1,29 +1,49 @@
 package com.Duckelekuuk.PPF.Timers;
 
+import com.Duckelekuuk.PPF.GameFrame.Widgets.Titles;
+import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.Managers.GameManager;
+import com.Duckelekuuk.PPF.PixelPartyFrame;
+import com.Duckelekuuk.PPF.Utils.PixelPartyState;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class LobbyTimer extends BukkitRunnable {
 
-    int time = 30;
+    private int time = 10;
 
     @Override
     public void run() {
-        if (GameManager.getInstance().getNextGame() == null) {
-            GameManager.getInstance().pickRandomGame();
-            //TODO: SETSCOREBOARD NEXT GAME
+        if (GameManager.getInstance().getCurrentGame() == null) {
+            if (GameManager.getInstance().getNextGame() == null) {
+                GameManager.getInstance().pickRandomGame();
+            }
+            if (!PixelPartyFrame.getPlugin().getGameManager().isLoading()) {
+                GameManager.getInstance().switchGame();
+            }
         }
 
-        if (!GameManager.getInstance().getPixelPartyConstant().canStart()) {
-            time = 30;
+        if (!PixelPartyFrame.getPlugin().getPixelPartyConstant().canStart()) {
+            time = 10;
+        }
+
+        if (time == 0) {
+            this.cancel();
+            PixelPartyFrame.getPlugin().getPixelPartyConstant().setPixelPartyState(PixelPartyState.IN_GAME);
+            for (GamePlayer gamePlayer : PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers()) {
+                Bukkit.getServer().broadcastMessage("Teleport");
+                gamePlayer.teleport(PixelPartyFrame.getPlugin().getGameManager().getCurrentGame().getGame().getSpawnLocation());
+                Titles.sendActionBar(gamePlayer.getPlayer(), "&a&bYou were teleported to the gameworld!");
+            }
             return;
         }
 
         time--;
-        //TODO: SCOREBOARD UPDATE
+        PixelPartyFrame.getPlugin().getPixelPartyConstant().getScoreBoard_Lobby().updateScoreboard(time);
     }
 }

@@ -2,19 +2,24 @@ package com.Duckelekuuk.PPF.Managers;
 
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
+@Getter
 public class GamePlayerManager {
 
+    private PixelPartyFrame plugin;
     private HashSet<GamePlayer> gamePlayers;
 
-    public GamePlayerManager() {
+    public GamePlayerManager(PixelPartyFrame plugin) {
+        this.plugin = plugin;
         this.gamePlayers = new HashSet<>();
     }
 
@@ -24,7 +29,10 @@ public class GamePlayerManager {
                 return gameplayer;
             }
         }
-        return null;
+        GamePlayer gamePlayer = new GamePlayer(player);
+        gamePlayers.add(gamePlayer);
+        PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers().add(gamePlayer);
+        return gamePlayer;
     }
 
     public static GamePlayerManager getInstance() {

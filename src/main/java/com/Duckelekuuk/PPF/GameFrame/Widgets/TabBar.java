@@ -9,8 +9,10 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 
 /**
- * Created by Duco on 25-10-2015.
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class TabBar {
 
     private static PacketPlayOutPlayerListHeaderFooter packet;

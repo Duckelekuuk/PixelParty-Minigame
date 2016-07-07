@@ -1,19 +1,17 @@
 package com.Duckelekuuk.PPF.Listeners.Player;
 
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
-import com.Duckelekuuk.PPF.Managers.GameManager;
-import com.Duckelekuuk.PPF.Managers.GamePlayerManager;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
+import com.Duckelekuuk.PPF.Utils.PixelPartyState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class PlayerChatListener implements Listener {
 
     private PixelPartyFrame plugin;
@@ -30,8 +28,11 @@ public class PlayerChatListener implements Listener {
             return;
         }
 
-        if (!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToChat()) {
-            event.setCancelled(true);
+        if (plugin.getPixelPartyConstant().getPixelPartyState() != PixelPartyState.IN_GAME) {
+            event.setCancelled(false);
+            return;
         }
+
+        event.setCancelled(!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToChat());
     }
 }

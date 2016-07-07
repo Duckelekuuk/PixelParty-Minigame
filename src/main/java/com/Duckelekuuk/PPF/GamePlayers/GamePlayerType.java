@@ -3,9 +3,10 @@ package com.Duckelekuuk.PPF.GamePlayers;
 import com.Duckelekuuk.PPF.GameFrame.Utils.Utils;
 
 /**
- * @AUTHOR Duco.
- * Description
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public enum GamePlayerType {
 
     PLAYER(0, ""),

@@ -3,36 +3,27 @@ package com.Duckelekuuk.PPF.Listeners.Player;
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import com.Duckelekuuk.PPF.Utils.PixelPartyState;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 
 /**
  * @AUTHOR: Duckelekuuk
  * Copyright © 2016, Duco Lindner, All rights reserved.
  */
 
-public class PlayerPVPListener implements Listener {
+public class PlayerBlockDamageListener implements Listener {
 
     private PixelPartyFrame plugin;
 
-    public PlayerPVPListener(PixelPartyFrame plugin) {
+    public PlayerBlockDamageListener(PixelPartyFrame plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player)) {
-            return;
-        }
+    public void onDamage(BlockDamageEvent event) {
 
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
-
-        Player player = (Player) event.getDamager();
-        GamePlayer gamePlayer = plugin.getGamePlayerManager().getGamePlayer(player);
+        GamePlayer gamePlayer = plugin.getGamePlayerManager().getGamePlayer(event.getPlayer());
 
         if (!gamePlayer.isIngame()) {
             return;
@@ -43,6 +34,6 @@ public class PlayerPVPListener implements Listener {
             return;
         }
 
-        event.setCancelled(!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToPVP());
+        event.setCancelled(!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToDamageBlocks());
     }
 }

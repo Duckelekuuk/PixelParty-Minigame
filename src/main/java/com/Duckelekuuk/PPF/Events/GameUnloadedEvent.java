@@ -6,8 +6,10 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Created by Duco on 23-2-2016.
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class GameUnloadedEvent extends Event {
 
     @Getter
@@ -17,7 +19,7 @@ public class GameUnloadedEvent extends Event {
     public GameUnloadedEvent(Game game) {
         this.game = game;
     }
-    
+
     @Override
     public HandlerList getHandlers() {
         return handlerList;

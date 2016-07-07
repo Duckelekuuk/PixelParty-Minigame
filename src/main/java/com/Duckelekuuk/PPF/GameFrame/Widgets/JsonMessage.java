@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 /**
  * @AUTHOR: Duckelekuuk
- * Copyright © 2016 Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
 
 public class JsonMessage {

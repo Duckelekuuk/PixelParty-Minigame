@@ -9,8 +9,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
 /**
- * Created by Duco on 24-2-2016.
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class ScoreboardAPI {
 
     private Scoreboard scoreboard;
@@ -40,7 +42,7 @@ public class ScoreboardAPI {
 
             @Override
             public void run() {
-                scoreboard.getTeam("timer").setSuffix(String.valueOf(ChatColor.YELLOW) + num);
+                scoreboard.getTeam("timer").setSuffix(ChatColor.YELLOW + "" + num);
                 num++;
             }
         }.runTaskTimerAsynchronously(PixelPartyFrame.getPlugin(), 20, 20);

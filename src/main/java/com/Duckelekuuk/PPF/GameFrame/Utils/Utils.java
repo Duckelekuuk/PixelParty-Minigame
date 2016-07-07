@@ -1,15 +1,15 @@
 package com.Duckelekuuk.PPF.GameFrame.Utils;
 
-import com.Duckelekuuk.PPF.Commands.PPCommand;
-import com.avaje.ebeaninternal.server.cluster.mcast.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * Created by Duco on 22-2-2016.
+ * @AUTHOR: Duckelekuuk
+ * Copyright © 2016, Duco Lindner, All rights reserved.
  */
+
 public class Utils {
 
     public static String color(String message) {
@@ -17,8 +17,8 @@ public class Utils {
     }
 
     public static String remakeTime(int time) {
-        int format = time%3600;
-        return format/60 + " : " + format%60;
+        int format = time % 3600;
+        return format / 60 + " : " + format % 60;
     }
 
     public static String prefix() {
