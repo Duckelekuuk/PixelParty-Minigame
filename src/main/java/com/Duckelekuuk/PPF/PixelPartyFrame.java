@@ -40,7 +40,7 @@ public class PixelPartyFrame extends JavaPlugin implements Listener {
         registerListeners();
         registerCommands();
 
-        /* ---------- SETTING UP DATABASE ---------- */
+        /** ---------- SETTING UP DATABASE ---------- **/
 //        mongoDB = new MongoDB("127.0.0.1", 222222);
     }
 
@@ -63,6 +63,7 @@ public class PixelPartyFrame extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new PlayerBlockDestroyListener(this), this);
         pluginManager.registerEvents(new PlayerBlockPlaceListener(this), this);
         pluginManager.registerEvents(new PlayerChatListener(this), this);
+        pluginManager.registerEvents(new PlayerFoodLevelChangeListener(this), this);
         pluginManager.registerEvents(new PlayerInteractListener(this), this);
         pluginManager.registerEvents(new PlayerPreLoginListener(this), this);
         pluginManager.registerEvents(new PlayerJoinListener(this), this);

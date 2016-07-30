@@ -21,8 +21,12 @@ public class Utils {
         return format / 60 + " : " + format % 60;
     }
 
+    public static String rawPrefix() {
+        return color("&6&lPixel&e&lParty&r");
+    }
+
     public static String prefix() {
-        return Utils.color("&6&lPixel&e&lParty &6&l\u00BB &7");
+        return color("&6&lPixel&e&lParty &6&l\u00BB &7");
     }
 
     public static void broadcast(String message) {
@@ -40,7 +44,7 @@ public class Utils {
 
     public static void sendMessage(CommandSender sender, String... messages) {
         sender.sendMessage("");
-        sender.sendMessage(Utils.color("&7------------ &6&lPixel&e&lParty &7 ------------"));
+        sender.sendMessage(Utils.color("&7------------ &6&lPixel&e&lParty &7------------"));
         sender.sendMessage("");
         for (String message : messages) {
             sender.sendMessage(Utils.color("&7\u00BB " + message));

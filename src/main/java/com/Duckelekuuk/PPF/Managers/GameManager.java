@@ -1,6 +1,7 @@
 package com.Duckelekuuk.PPF.Managers;
 
 import com.Duckelekuuk.PPF.Events.GameReadyEvent;
+import com.Duckelekuuk.PPF.GameFrame.Core.Game;
 import com.Duckelekuuk.PPF.GameFrame.PPCore;
 import com.Duckelekuuk.PPF.GameFrame.Utils.Utils;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
@@ -20,13 +21,14 @@ public class GameManager {
 
     @Getter
     private ArrayList<PPCore> games = new ArrayList<>();
+    private ArrayList<PPCore> playedGames = new ArrayList<>();
     private PPCore currentGame = null;
     private PPCore nextGame = null;
     private boolean loading;
 
     public void registerGame(PPCore ppCore) {
         for (int i = 0; i < games.size(); i++) {
-            if (games.get(i).getGame().getName() == ppCore.getGame().getName()) {
+            if (games.get(i).getGameName().equalsIgnoreCase(ppCore.getGameName())) {
                 PixelPartyFrame.getPlugin().getLogger().info(Utils.prefix());
                 continue;
             }
@@ -57,14 +59,31 @@ public class GameManager {
     public void switchGame() {
         loading = true;
         if (nextGame == null) {
-            this.nextGame = pickRandomGame();
-        }
+            nextGame = pickRandomGame();
 
-        nextGame.setup();
+            if (playedGames.contains(nextGame)) {
+                nextGame = null;
+                switchGame();
+                return;
+            }
+        }
+        final PPCore nextGameF = nextGame;
+
+        playedGames.add(nextGame);
+        Bukkit.getServer().getScheduler().runTask(PixelPartyFrame.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                nextGameF.setup();
+            }
+        });
         Bukkit.getServer().getPluginManager().callEvent(new GameReadyEvent(nextGame.getGame()));
         currentGame = nextGame;
-
+        nextGame = null;
         loading = false;
+    }
+
+    public boolean wasFinalGame() {
+        return (playedGames.size() >= PixelPartyFrame.getPlugin().getPixelPartyConstant().getMaxGames() || playedGames.size() == games.size());
     }
 
     public static GameManager getInstance() {

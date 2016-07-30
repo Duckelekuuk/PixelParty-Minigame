@@ -6,7 +6,9 @@ import com.Duckelekuuk.PPF.Execeptions.GameWorldNotFoundExeption;
 import com.Duckelekuuk.PPF.GameFrame.Extenders.GameEndExecutor;
 import com.Duckelekuuk.PPF.GameFrame.Extenders.GameStartExecutor;
 import com.Duckelekuuk.PPF.GameFrame.Extenders.GameTimerTickExecutor;
+import com.Duckelekuuk.PPF.GameFrame.Extenders.PPTeamTemplate;
 import com.Duckelekuuk.PPF.GameFrame.PPCore;
+import com.Duckelekuuk.PPF.GameFrame.Utils.DevideType;
 import com.Duckelekuuk.PPF.GameFrame.Utils.Utils;
 import com.Duckelekuuk.PPF.GameFrame.Utils.WeatherType;
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
@@ -21,11 +23,14 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * @AUTHOR: Duckelekuuk
@@ -39,9 +44,13 @@ public class Game {
     private PPCore ppCore;
     private String prefix;
     private PreventionSet preventionSet;
-    private String worldLocation;
     private GameState currentState;
     private Location spawnLocation;
+    private Scoreboard teamScoreboard;
+    private ArrayList<PPTeam> teams;
+
+    private DevideType devideType;
+    private PPTeamTemplate[] ppTeamplates;
 
     @Setter
     private int gameTimerTick;
@@ -64,14 +73,15 @@ public class Game {
     @Setter
     private GameEndExecutor endExecutor;
 
-    public Game(PPCore ppCore, PreventionSet preventionSet, String worldLocation) {
+    public Game(PPCore ppCore, PreventionSet preventionSet) {
         this.ppCore = ppCore;
         this.name = ppCore.getGameName();
         this.prefix = Utils.color(ppCore.getGamePrefix());
         this.preventionSet = preventionSet;
-        this.worldLocation = worldLocation;
         this.gameTimerTick = 20;
         this.spawnLocation = null;
+        this.teamScoreboard = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
+        this.teams = new ArrayList<>();
         this.gameStates = new HashSet<>();
 
         if (!ppCore.getPlugin().getDataFolder().exists()) {
@@ -133,7 +143,7 @@ public class Game {
         Bukkit.getServer().getPluginManager().callEvent(new GameOverEvent(this, winners_list));
 
         for (GamePlayer gamePlayer : PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers()) {
-            gamePlayer.getPlayer().teleport(PixelPartyFrame.getPlugin().getPixelPartyConstant().getLobbyLocation());
+            gamePlayer.teleport(PixelPartyFrame.getPlugin().getPixelPartyConstant().getLobbyLocation());
         }
     }
 
@@ -169,8 +179,117 @@ public class Game {
         }
     }
 
+    public void registerTeam(DevideType devideType, PPTeamTemplate... team) {
+        this.devideType = devideType;
+        this.ppTeamplates = team;
+
+    }
+
+    public void divide() {
+        switch (devideType) {
+            case CUSTOM:
+                for (PPTeamTemplate template : ppTeamplates) {
+                    PPTeam teamOBJ = new PPTeam(teamScoreboard, template);
+                    this.teams.add(teamOBJ);
+                }
+                divideInTeams();
+                break;
+            case DUO:
+                divideInDuos();
+                break;
+
+            case SOLO:
+                devideInSolo(ppTeamplates[0]);
+                break;
+
+            case TEAMVSTEAM:
+                divideInPairs(ppTeamplates[0]);
+                break;
+        }
+
+        for (GamePlayer gamePlayer : PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers()) {
+            gamePlayer.getPlayer().setScoreboard(teamScoreboard);
+        }
+    }
+
+    public PPTeam getTeam(String name) {
+        for (PPTeam team : teams) {
+            if (team.getTeamTemplate().getTeamName().equalsIgnoreCase(name)) {
+                return team;
+            }
+        }
+        return null;
+    }
+
+    public PPTeam getTeam(GamePlayer gamePlayer) {
+        for (PPTeam team : teams) {
+            if (team.getMembers().contains(gamePlayer)) {
+                return team;
+            }
+        }
+        return null;
+    }
+
     public void setWeatherType(WeatherType weatherType) {
         WeatherType.setWeather(Bukkit.getServer().getWorld("GameWorld"), weatherType);
         this.weatherType = weatherType;
+    }
+
+    private void divideInTeams() {
+        ArrayList<GamePlayer> dividedPlayers = new ArrayList<>();
+        int module = teams.size();
+        Random random = new Random();
+
+        int num = 0;
+
+        while (dividedPlayers.size() < PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers().size()) {
+            int randomNum = random.nextInt(PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers().size());
+            GamePlayer gamePlayer = PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers().get(randomNum);
+            if (!dividedPlayers.contains(gamePlayer)) {
+                teams.get(num % module).addMember(gamePlayer);
+                dividedPlayers.add(gamePlayer);
+                gamePlayer.getPlayer().sendMessage(Utils.color("You are on team: " + teams.get(num % module).getTeamTemplate().getTeamPrefix()));
+                num++;
+            }
+        }
+    }
+
+    private void divideInDuos() {
+
+    }
+
+    private void devideInSolo(PPTeamTemplate teamTemplate) {
+        for (GamePlayer gamePlayer : PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers()) {
+            PPTeam teamOBJ = new PPTeam(teamScoreboard, teamTemplate);
+            teams.add(teamOBJ);
+            teamOBJ.addMember(gamePlayer);
+        }
+    }
+
+    private void divideInPairs(PPTeamTemplate teamTemplate) {
+        ArrayList<GamePlayer> dividedPlayers = new ArrayList<>();
+
+        Random random = new Random();
+
+        PPTeam team = null;
+
+        while (dividedPlayers.size() < PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers().size()) {
+            int randomNum = random.nextInt(PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers().size());
+            GamePlayer gamePlayer = PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers().get(randomNum);
+
+            if (!dividedPlayers.contains(gamePlayer)) {
+                dividedPlayers.add(gamePlayer);
+                if (team == null) {
+                    PPTeam teamOBJ = new PPTeam(teamScoreboard, teamTemplate);
+                    teams.add(teamOBJ);
+                    team = teamOBJ;
+
+                    team.addMember(gamePlayer);
+                } else {
+                    team.addMember(gamePlayer);
+                    team = null;
+                }
+            }
+        }
     }
 }

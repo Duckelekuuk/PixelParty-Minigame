@@ -1,6 +1,7 @@
 package com.Duckelekuuk.PPF.GameFrame.Extenders;
 
-import javafx.scene.paint.Material;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
  * Copyright © 2016, Duco Lindner, All rights reserved.
  */
 
-public abstract class SpawnItems {
+public abstract class PPSpawnItems {
 
     public abstract Material getHelmet();
 
@@ -19,5 +20,5 @@ public abstract class SpawnItems {
 
     public abstract Material getBoots();
 
-    public abstract HashMap<Material, Integer> getItems();
+    public abstract HashMap<ItemStack, Integer> getItems();
 }

@@ -5,7 +5,7 @@ import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * @AUTHOR: Duckelekuuk
@@ -15,27 +15,30 @@ import java.util.HashSet;
 public class WarmUpTimer extends BukkitRunnable {
 
     private int time = 10;
-    private HashSet<GamePlayer> gamePlayers;
+    private ArrayList<GamePlayer> gamePlayers;
 
-    public WarmUpTimer(HashSet<GamePlayer> gamePlayers) {
+    public WarmUpTimer(ArrayList<GamePlayer> gamePlayers) {
         this.gamePlayers = gamePlayers;
     }
 
     @Override
     public void run() {
+        if (time == 10) {
+            PixelPartyFrame.getPlugin().getGameManager().getCurrentGame().getGame().divide();
+        }
         if (time % 10 == 0) {
             for (GamePlayer gamePlayer : gamePlayers) {
-//                Titles.sendCompleteTitle(gamePlayer.getPlayer(), "&a&l" + time, "&eSeconds until the game starts", 5, 30, 10);
+                Titles.sendCompleteTitle(gamePlayer.getPlayer(), "&a&l" + time, "&eSeconds until the game starts", 5, 30, 10);
             }
         }
         if (time <= 10 && time > 5) {
             for (GamePlayer gamePlayer : gamePlayers) {
-//                Titles.sendCompleteTitle(gamePlayer.getPlayer(), "&6&l" + time, "&eSeconds until the game starts", 5, 30, 10);
+                Titles.sendCompleteTitle(gamePlayer.getPlayer(), "&6&l" + time, "&eSeconds until the game starts", 5, 30, 10);
             }
         }
         if (time <= 5) {
             for (GamePlayer gamePlayer : gamePlayers) {
-//                Titles.sendCompleteTitle(gamePlayer.getPlayer(), "&c&l" + time, "&eSeconds until the game starts", 5, 12, 10);
+                Titles.sendCompleteTitle(gamePlayer.getPlayer(), "&c&l" + time, "&eSeconds until the game starts", 5, 12, 10);
             }
         }
         if (time == 0) {

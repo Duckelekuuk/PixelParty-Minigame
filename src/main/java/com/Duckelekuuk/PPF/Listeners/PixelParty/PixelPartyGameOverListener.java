@@ -4,6 +4,7 @@ import com.Duckelekuuk.PPF.Events.GameOverEvent;
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import com.Duckelekuuk.PPF.Utils.PixelPartyState;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -29,6 +30,14 @@ public class PixelPartyGameOverListener implements Listener {
         for (GamePlayer gamePlayer : event.getWinners()) {
             gamePlayer.setScore(gamePlayer.getScore() + 1);
             gamePlayer.getScoreboard().updateScoreboard();
+        }
+        if (plugin.getGameManager().wasFinalGame()) {
+            plugin.getPixelPartyConstant().setPixelPartyState(PixelPartyState.CLEANING_UP);
+            return;
+        }
+
+        for (GamePlayer gamePlayer : PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers()) {
+            gamePlayer.getPlayer().setScoreboard(null);
         }
 
         plugin.getPixelPartyConstant().setPixelPartyState(PixelPartyState.TRANSITION);

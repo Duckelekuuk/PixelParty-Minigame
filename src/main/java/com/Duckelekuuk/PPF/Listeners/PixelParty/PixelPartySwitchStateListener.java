@@ -1,8 +1,7 @@
 package com.Duckelekuuk.PPF.Listeners.PixelParty;
 
 import com.Duckelekuuk.PPF.Events.PixelPartySwitchStateEvent;
-import com.Duckelekuuk.PPF.GameFrame.Utils.Utils;
-import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
+import com.Duckelekuuk.PPF.GameFrame.Core.PPTeam;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import com.Duckelekuuk.PPF.Utils.PixelPartyState;
 import org.bukkit.event.EventHandler;
@@ -30,6 +29,9 @@ public class PixelPartySwitchStateListener implements Listener {
                 break;
 
             case IN_GAME:
+                for (PPTeam team : plugin.getGameManager().getCurrentGame().getGame().getTeams()) {
+                    team.enableTeam();
+                }
                 plugin.getPixelPartyConstant().getWarmUpTimer().runTaskTimerAsynchronously(PixelPartyFrame.getPlugin(), 20, 20);
                 break;
 
@@ -38,9 +40,7 @@ public class PixelPartySwitchStateListener implements Listener {
                 break;
 
             case CLEANING_UP:
-                for (GamePlayer gamePlayer : PixelPartyFrame.getPlugin().getGamePlayerManager().getGamePlayers()) {
-                    gamePlayer.getPlayer().kickPlayer(Utils.prefixMessage("\n&aThe server is restarting"));
-                }
+                plugin.getPixelPartyConstant().getGameEndingTimer().runTaskTimerAsynchronously(PixelPartyFrame.getPlugin(), 40, 20);
                 break;
         }
     }

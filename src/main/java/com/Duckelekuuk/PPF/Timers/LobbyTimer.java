@@ -28,6 +28,7 @@ public class LobbyTimer extends BukkitRunnable {
             }
         }
 
+        time--;
         if (!PixelPartyFrame.getPlugin().getPixelPartyConstant().canStart()) {
             time = 10;
         }
@@ -36,14 +37,12 @@ public class LobbyTimer extends BukkitRunnable {
             this.cancel();
             PixelPartyFrame.getPlugin().getPixelPartyConstant().setPixelPartyState(PixelPartyState.IN_GAME);
             for (GamePlayer gamePlayer : PixelPartyFrame.getPlugin().getPixelPartyConstant().getPlayers()) {
-                Bukkit.getServer().broadcastMessage("Teleport");
                 gamePlayer.teleport(PixelPartyFrame.getPlugin().getGameManager().getCurrentGame().getGame().getSpawnLocation());
                 Titles.sendActionBar(gamePlayer.getPlayer(), "&a&bYou were teleported to the gameworld!");
             }
             return;
         }
 
-        time--;
         PixelPartyFrame.getPlugin().getPixelPartyConstant().getScoreBoard_Lobby().updateScoreboard(time);
     }
 }

@@ -22,6 +22,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         GamePlayer gamePlayer = plugin.getGamePlayerManager().getGamePlayer(event.getPlayer());
+        gamePlayer.getPlayer().teleport(plugin.getPixelPartyConstant().getLobbyLocation());
 
         switch (plugin.getPixelPartyConstant().getPixelPartyState()) {
             case LOBBY:

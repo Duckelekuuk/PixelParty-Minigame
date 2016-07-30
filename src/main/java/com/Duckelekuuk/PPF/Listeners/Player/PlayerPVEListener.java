@@ -1,8 +1,10 @@
 package com.Duckelekuuk.PPF.Listeners.Player;
 
+import com.Duckelekuuk.PPF.Events.PlayerEliminateEvent;
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import com.Duckelekuuk.PPF.Utils.PixelPartyState;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,5 +42,13 @@ public class PlayerPVEListener implements Listener {
         }
 
         event.setCancelled(!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToPVE());
+
+        if (plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToPVE()) {
+            if (event.getDamage() > ((Player) event.getEntity()).getHealth()) {
+                event.setCancelled(true);
+
+                Bukkit.getServer().getPluginManager().callEvent(new PlayerEliminateEvent(plugin.getGameManager().getCurrentGame().getGame(), gamePlayer, null));
+            }
+        }
     }
 }

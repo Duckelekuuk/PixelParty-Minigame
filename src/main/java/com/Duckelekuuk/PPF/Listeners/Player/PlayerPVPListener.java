@@ -1,8 +1,10 @@
 package com.Duckelekuuk.PPF.Listeners.Player;
 
+import com.Duckelekuuk.PPF.Events.PlayerEliminateEvent;
 import com.Duckelekuuk.PPF.GamePlayers.GamePlayer;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import com.Duckelekuuk.PPF.Utils.PixelPartyState;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,7 +33,7 @@ public class PlayerPVPListener implements Listener {
             return;
         }
 
-        Player player = (Player) event.getDamager();
+        Player player = (Player) event.getEntity();
         GamePlayer gamePlayer = plugin.getGamePlayerManager().getGamePlayer(player);
 
         if (!gamePlayer.isIngame()) {
@@ -44,5 +46,15 @@ public class PlayerPVPListener implements Listener {
         }
 
         event.setCancelled(!plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToPVP());
+
+        if (plugin.getGameManager().getCurrentGame().getGame().getPreventionSet().isAllowedToPVP()) {
+            if (event.getDamage() > ((Player) event.getEntity()).getHealth()) {
+                event.setCancelled(true);
+
+                GamePlayer damager = plugin.getGamePlayerManager().getGamePlayer((Player) event.getDamager());
+
+                Bukkit.getServer().getPluginManager().callEvent(new PlayerEliminateEvent(plugin.getGameManager().getCurrentGame().getGame(), gamePlayer, damager));
+            }
+        }
     }
 }

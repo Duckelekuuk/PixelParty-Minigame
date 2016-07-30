@@ -26,6 +26,13 @@ public class ScoreboardBuilder {
         objective.setDisplaySlot(displaySlot);
         objective.setDisplayName(Utils.color(displayName));
     }
+    public ScoreboardBuilder(Scoreboard scoreboard, String name, DisplaySlot displaySlot, String displayName) {
+        this.scoreboard = scoreboard;
+        this.objective = scoreboard.registerNewObjective(name, "dummy");
+
+        objective.setDisplaySlot(displaySlot);
+        objective.setDisplayName(Utils.color(displayName));
+    }
 
 
     public ScoreboardBuilder addScore(String objectiveName, String prefix, String name, String suffix, int score) {

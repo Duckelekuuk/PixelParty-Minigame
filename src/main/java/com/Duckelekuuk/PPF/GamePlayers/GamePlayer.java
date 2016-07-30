@@ -1,5 +1,6 @@
 package com.Duckelekuuk.PPF.GamePlayers;
 
+import com.Duckelekuuk.PPF.GameFrame.Utils.Utils;
 import com.Duckelekuuk.PPF.PixelPartyFrame;
 import com.Duckelekuuk.PPF.ScoreBoards.TransitionScoreBoard;
 import lombok.Getter;
@@ -45,5 +46,16 @@ public class GamePlayer {
                 player.teleport(location);
             }
         });
+    }
+
+
+    public void kickPlayer(final String reason) {
+        Bukkit.getServer().getScheduler().runTask(PixelPartyFrame.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                player.kickPlayer(Utils.rawPrefix() + Utils.color(reason));
+            }
+        });
+
     }
 }
